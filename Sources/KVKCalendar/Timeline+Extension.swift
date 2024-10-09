@@ -336,6 +336,7 @@ extension TimelineView {
     func createTimesLabel(start: Int, end: Int) -> (times: [TimelineLabel], items: [UILabel]) {
         var times = [TimelineLabel]()
         var otherTimes = [UILabel]()
+        var startIndex = 0
         for (idx, txtHour) in timeSystem.getHours(isEndOfDayZero: style.isEndOfDayZero).enumerated() where idx >= start && idx <= end {
             let yTime = (calculatedTimeY + style.timeline.heightTime) * CGFloat(idx - start)
             let time = TimelineLabel(frame: CGRect(x: leftOffsetWithAdditionalTime,
@@ -347,7 +348,7 @@ extension TimelineView {
             time.textColor = style.timeline.timeColor
             time.text = txtHour
             let hourTmp = TimeHourSystem.twentyFour.getHours(isEndOfDayZero: style.isEndOfDayZero)[idx]
-            let hour = timeLabelFormatter.date(from: hourTmp)?.kvkHour ?? 0
+            let hour = timeLabelFormatter.date(from: hourTmp)?.kvkHour ?? startIndex
             time.hashTime = hour
             time.tag = idx - start
             time.isHidden = !isDisplayedTimes
@@ -358,6 +359,7 @@ extension TimelineView {
             } else {
                 times.append(time)
             }
+            startIndex += 1
         }
         return (times, otherTimes)
     }
